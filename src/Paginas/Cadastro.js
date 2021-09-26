@@ -22,11 +22,9 @@ const Cadastro = props => {
   const [listaConta, setListaConta] = useState([]);
 
   const salvarCadastro = async () => {
-    const cadastrosRealm = await getRealm();
     const realm = await getRealm();
-    const cadastros = cadastrosRealm.objects('Cadastro');
+    const cadastros = realm.objects('Cadastro');
 
-    console.log('cadastros', cadastros)
 
     const idUltimoCadastro = cadastros.length > 0 ? cadastros[cadastros.length - 1].id : 1;
     const valorSemR$ = conta.valor
@@ -36,7 +34,6 @@ const Cadastro = props => {
 
       console.log('listaConta', listaConta)
     const listaContaAdaptada = listaConta.map((item, index) => {
-      console.log('listacontaadaptada', item)
       return {
         id: idUltimoCadastro + index + 1,
         descricao: item.descricao,
@@ -47,7 +44,6 @@ const Cadastro = props => {
     });
 
     listaContaAdaptada.forEach(item => {
-    //   console.log('item', item)
       realm.write(() => {
         realm.create('Cadastro', item);
       });

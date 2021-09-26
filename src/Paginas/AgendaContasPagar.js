@@ -36,7 +36,6 @@ const AgendaContasPagar = props => {
   const loadCadastros = async() => {
     const realm = await getRealm();
     const data = realm.objects('Cadastro').sorted('data', true);
-    console.log('data', data)
 
     const contasAdaptada = data.map(item => {
       const dataVencimento = new Date(item.data).toLocaleDateString();
@@ -225,8 +224,6 @@ const AgendaContasPagar = props => {
             label="<"
             onPressButton={onPressButtonMesAnterior}
           />
-          {console.log('mesSelecionado',mesSelecionado)}
-          {console.log('mesAtual', mesAtual)}
           {mesSelecionado.get("months") === mesAtual.get("months") ? <Botao
             widthFixo
             isPreenchido
