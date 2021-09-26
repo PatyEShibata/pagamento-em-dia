@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, {useState, useEffect} from 'react';
 import {Text, View, FlatList, KeyboardAvoidingView, Alert} from 'react-native';
 import {ListItem, Button, Icon} from 'react-native-elements';
@@ -27,9 +28,9 @@ const AgendaContasPagar = props => {
   const [totalConta, setTotalConta] = useState(0);
   const [totalPago, setTotalPago] = useState(0);
   const [mesSelecionado, setMesSelecionado] = useState(
-    new Date().getMonth() + 1
+    moment()
   );
-  const mesAtual = new Date().getMonth() + 1
+  const mesAtual = moment()
   const contasPagas = cadastros.filter(item => item.pago);
 
   const loadCadastros = async() => {
@@ -70,8 +71,7 @@ const AgendaContasPagar = props => {
 
   useEffect(() => {
     loadCadastros();
-    props.navigation.setParams({ title:mesSelecionadoTitulo[mesSelecionado-1] });
-    // navigation.navigate('AgendaContasPagar', { params: { mesSelecionado: mesSelecionadoTitulo[mesSelecionado-1] } })
+    props.navigation.setParams({ title:mesSelecionadoTitulo[mesSelecionado.get("months")] });
     }, [mesSelecionado])
    
 
@@ -181,11 +181,15 @@ const AgendaContasPagar = props => {
   }
 
   const onPressButtonMesAnterior = () => {
-    setMesSelecionado(mesSelecionado - 1);
+    mesSelecionado.subtract(1, "months");
+
+    setMesSelecionado(moment(mesSelecionado));
   };
 
   const onPressButtonMesPosterior = () => {
-    setMesSelecionado(mesSelecionado + 1);
+    mesSelecionado.add(1, "months");
+    setMesSelecionado(moment(mesSelecionado));
+
   };
 
   return (
