@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, {useState, useEffect} from 'react';
 import {Text, View, FlatList, KeyboardAvoidingView, Alert} from 'react-native';
 import {ListItem, Button, Icon} from 'react-native-elements';
@@ -27,12 +28,12 @@ const AgendaContasPagar = props => {
   const [totalConta, setTotalConta] = useState(0);
   const [totalPago, setTotalPago] = useState(0);
   const [mesSelecionado, setMesSelecionado] = useState(
-    new Date().getMonth() + 1
+    moment()
   );
-  const mesAtual = new Date().getMonth() + 1
+  const mesAtual = moment()
   const contasPagas = cadastros.filter(item => item.pago);
 
-  async function loadCadastros() {
+  const loadCadastros = async() => {
     const realm = await getRealm();
     const data = realm.objects('Cadastro').sorted('data', true);
 
@@ -52,7 +53,7 @@ const AgendaContasPagar = props => {
     const dadosMesSelecionado = contasAdaptada.filter(item => {
       const monthDataVencimento = item.data.substr(3, 2);
 
-      return monthDataVencimento == mesSelecionado;
+      return Number(monthDataVencimento) == mesSelecionado.get("month")+1;
     });
 
     setCadastros(dadosMesSelecionado);
@@ -69,8 +70,7 @@ const AgendaContasPagar = props => {
 
   useEffect(() => {
     loadCadastros();
-    props.navigation.setParams({ title:mesSelecionadoTitulo[mesSelecionado-1] });
-    // navigation.navigate('AgendaContasPagar', { params: { mesSelecionado: mesSelecionadoTitulo[mesSelecionado-1] } })
+    props.navigation.setParams({ title: `${mesSelecionadoTitulo[mesSelecionado.get("months")]}/${mesSelecionado.get("years")}` });
     }, [mesSelecionado])
    
 
@@ -114,28 +114,6 @@ const AgendaContasPagar = props => {
     };
 
     return (
-      // <ListItem
-      //   key={item.id}
-      //   bottomDivider
-      //   onPress={() => onPressRow(item)}
-      // >
-      //   <ListItem.Content style={styles.descricaoData}>
-      //     <ListItem.Title> { item.descricao } </ListItem.Title>
-      //     <ListItem.Subtitle> { item.data } </ListItem.Subtitle>
-      //   </ListItem.Content>
-      //   <ListItem.Content style={styles.valorPagarPago}>
-      //     <ListItem.Title> { `R$ ${item.valor}` } </ListItem.Title>
-      //       {/* <InformePagarPago
-      //         label={item.pago ? "pago" : "pagar"}
-      //         color={item.pago ?  "#1F8F0D" : "#B92626"}
-      //       /> */}
-      //       <ListItem.Title
-      //         style={item.pago ? styles.buttonPago : styles.buttonPagar}
-      //       >
-      //         {item.pago ? "Pago" : "Pagar"}
-      //       </ListItem.Title>
-      //   </ListItem.Content>
-      // </ListItem>
       <ListItem.Swipeable
         onPress={() => onPressRow(item)}
         left={null}
@@ -180,11 +158,15 @@ const AgendaContasPagar = props => {
   }
 
   const onPressButtonMesAnterior = () => {
-    setMesSelecionado(mesSelecionado - 1);
+    mesSelecionado.subtract(1, "months");
+
+    setMesSelecionado(moment(mesSelecionado));
   };
 
   const onPressButtonMesPosterior = () => {
-    setMesSelecionado(mesSelecionado + 1);
+    mesSelecionado.add(1, "months");
+    setMesSelecionado(moment(mesSelecionado));
+
   };
 
   return (
@@ -220,7 +202,7 @@ const AgendaContasPagar = props => {
             label="<"
             onPressButton={onPressButtonMesAnterior}
           />
-          {mesSelecionado === mesAtual ? <Botao
+          {mesSelecionado.get("months") === mesAtual.get("months") ? <Botao
             widthFixo
             isPreenchido
             label="Adicionar conta a pagar"
