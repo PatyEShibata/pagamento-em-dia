@@ -53,7 +53,7 @@ const AgendaContasPagar = props => {
     const dadosMesSelecionado = contasAdaptada.filter(item => {
       const monthDataVencimento = item.data.substr(3, 2);
 
-      return monthDataVencimento == mesSelecionado;
+      return Number(monthDataVencimento) == mesSelecionado.get("month")+1;
     });
 
     setCadastros(dadosMesSelecionado);
@@ -70,7 +70,7 @@ const AgendaContasPagar = props => {
 
   useEffect(() => {
     loadCadastros();
-    props.navigation.setParams({ title:mesSelecionadoTitulo[mesSelecionado.get("months")] });
+    props.navigation.setParams({ title: `${mesSelecionadoTitulo[mesSelecionado.get("months")]}/${mesSelecionado.get("years")}` });
     }, [mesSelecionado])
    
 
@@ -114,28 +114,6 @@ const AgendaContasPagar = props => {
     };
 
     return (
-      // <ListItem
-      //   key={item.id}
-      //   bottomDivider
-      //   onPress={() => onPressRow(item)}
-      // >
-      //   <ListItem.Content style={styles.descricaoData}>
-      //     <ListItem.Title> { item.descricao } </ListItem.Title>
-      //     <ListItem.Subtitle> { item.data } </ListItem.Subtitle>
-      //   </ListItem.Content>
-      //   <ListItem.Content style={styles.valorPagarPago}>
-      //     <ListItem.Title> { `R$ ${item.valor}` } </ListItem.Title>
-      //       {/* <InformePagarPago
-      //         label={item.pago ? "pago" : "pagar"}
-      //         color={item.pago ?  "#1F8F0D" : "#B92626"}
-      //       /> */}
-      //       <ListItem.Title
-      //         style={item.pago ? styles.buttonPago : styles.buttonPagar}
-      //       >
-      //         {item.pago ? "Pago" : "Pagar"}
-      //       </ListItem.Title>
-      //   </ListItem.Content>
-      // </ListItem>
       <ListItem.Swipeable
         onPress={() => onPressRow(item)}
         left={null}
