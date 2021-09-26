@@ -17,8 +17,6 @@ const Cadastro = props => {
 
   const [conta, setConta] = useState({});
   const [error, setError] = useState(false);
-  const [quantidade, setQuantidade] = useState(1);
-  const [diaVencimento, setDiaVencimento] = useState(1);
   const [listaConta, setListaConta] = useState([]);
 
   const salvarCadastro = async () => {
@@ -38,7 +36,7 @@ const Cadastro = props => {
         id: idUltimoCadastro + index + 1,
         descricao: item.descricao,
         valor: parseFloat(valorSemR$),
-        data: item.data,
+        data: moment(item.data, "DD/MM/YYYY").format("MM/DD/YYYY"),
         pago: false,
       };
     });
@@ -56,9 +54,9 @@ const Cadastro = props => {
     if (
       !conta.descricao ||
       conta.valor > 0 ||
-      diaVencimento === 0 ||
-      quantidade === 0 ||
-      quantidade === ''
+      conta.data === 0 ||
+      conta.quantidade === 0 ||
+      conta.quantidade === ''
     ) {
       Alert.alert(
         'Todos os dados são obrigatórios.',
@@ -73,7 +71,7 @@ const Cadastro = props => {
     } else {
       const dataVencimentoCompletoTipoDate = getDadosData();
 
-      for (let index = 0; index < quantidade; index++) {
+      for (let index = 0; index < conta.quantidade; index++) {
         const novaData = dataVencimentoCompletoTipoDate.add(1, "months").format("DD/MM/YYYY");
 
         listaConta.push({...conta, data: novaData});
@@ -93,9 +91,9 @@ const Cadastro = props => {
     const anoAtual = dataAtual.getFullYear();
 
     const mesComDiaVerificado =
-      diaAtual > diaVencimento ? mesAtual + 1 : mesAtual;
+      diaAtual > conta.data ? mesAtual + 1 : mesAtual;
    
-    const dataVencimento = moment(`${diaVencimento}/${mesComDiaVerificado}/${anoAtual}`, "DD/MM/YYYY");
+    const dataVencimento = moment(`${conta.data}/${mesComDiaVerificado}/${anoAtual}`, "DD/MM/YYYY");
 
     return dataVencimento;
   };
@@ -122,19 +120,19 @@ const Cadastro = props => {
               onChangeText={valor => setConta({...conta, valor})}
             />
             <Input
-              value={diaVencimento.toString()}
+              value={conta.data?.toString() || ""}
               title="Dia do vencimento"
               placeholder="Dia"
               error={error}
-              onChangeText={dia => setDiaVencimento(dia)}
+              onChangeText={dia => setConta({...conta, data: dia})}
               keyboardType="numeric"
             />
             <Input
-              value={quantidade.toString()}
+              value={conta.quantidade?.toString() || ""}
               title="Quantidade de meses"
               placeholder="Quantidade"
               error={error}
-              onChangeText={quantidade => setQuantidade(quantidade)}
+              onChangeText={quantidade => setConta({...conta, quantidade})}
               keyboardType="numeric"
             />
           </View>

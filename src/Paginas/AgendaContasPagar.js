@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, {useState, useEffect} from 'react';
 import {Text, View, FlatList, KeyboardAvoidingView, Alert} from 'react-native';
-import {ListItem, Button, Icon} from 'react-native-elements';
+import {ListItem, Button} from 'react-native-elements';
 import Botao from '../Componentes/Botao';
 import BotaoRedondo from '../Componentes/BotaoRedondo';
 import InformePagarPago from '../Componentes/InformePagarPago';
@@ -38,7 +38,7 @@ const AgendaContasPagar = props => {
     const data = realm.objects('Cadastro').sorted('data', true);
 
     const contasAdaptada = data.map(item => {
-      const dataVencimento = new Date(item.data).toLocaleDateString();
+      const dataVencimento = moment(item.data).format('DD/MM/YY');
       const valorConta = item.valor.toFixed(2).replace('.', ',');
 
       return {
