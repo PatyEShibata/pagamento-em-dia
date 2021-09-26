@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 
 const InputMask = props => {
   const { title, placeholder, route, navigation } = props;
-  // const [ conta, setConta ] = useState(route.params ? route.params : {})
-  const [ conta, setConta ] = useState({})
 
   return(
     <View>
@@ -30,7 +28,6 @@ const styles = {
     paddingHorizontal: 15,
     borderWidth: 1,
     borderColor: '#C4C4C4', 
-    // borderColor: {props => props.error ? '#FF7272' : '#C4C4C4'}, 
     borderBottomRightRadius: 16,
     borderTopRightRadius: 16,
     borderTopLeftRadius: 16,

@@ -32,9 +32,10 @@ const AgendaContasPagar = props => {
   const mesAtual = new Date().getMonth() + 1
   const contasPagas = cadastros.filter(item => item.pago);
 
-  async function loadCadastros() {
+  const loadCadastros = async() => {
     const realm = await getRealm();
     const data = realm.objects('Cadastro').sorted('data', true);
+    console.log('data', data)
 
     const contasAdaptada = data.map(item => {
       const dataVencimento = new Date(item.data).toLocaleDateString();
