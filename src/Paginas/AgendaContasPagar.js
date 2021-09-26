@@ -225,7 +225,9 @@ const AgendaContasPagar = props => {
             label="<"
             onPressButton={onPressButtonMesAnterior}
           />
-          {mesSelecionado === mesAtual ? <Botao
+          {console.log('mesSelecionado',mesSelecionado)}
+          {console.log('mesAtual', mesAtual)}
+          {mesSelecionado.get("months") === mesAtual.get("months") ? <Botao
             widthFixo
             isPreenchido
             label="Adicionar conta a pagar"
