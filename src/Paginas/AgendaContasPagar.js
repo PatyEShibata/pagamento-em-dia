@@ -25,8 +25,6 @@ const mesSelecionadoTitulo = [
 const AgendaContasPagar = props => {
   const {navigation, route} = props;
   const [cadastros, setCadastros] = useState([]);
-  const [totalConta, setTotalConta] = useState(0);
-  const [totalPago, setTotalPago] = useState(0);
   const [mesSelecionado, setMesSelecionado] = useState(
     moment()
   );
@@ -87,6 +85,7 @@ const AgendaContasPagar = props => {
           'Cadastro',
           {
             ...item,
+            data: moment(item.data, "DD/MM/YYYY").format("MM/DD/YYYY"),
             valor: +item.valor.replace(',', '.'),
             pago: false,
           },
@@ -98,12 +97,14 @@ const AgendaContasPagar = props => {
 
     const onPressRealizarPagamento = async item => {
       const realm = await getRealm();
+      console.log('item', item)
 
       realm.write(() => {
         realm.create(
           'Cadastro',
           {
             ...item,
+            data: moment(item.data, "DD/MM/YYYY").format("MM/DD/YYYY"),
             valor: +item.valor.replace(',', '.'),
             pago: true,
           },

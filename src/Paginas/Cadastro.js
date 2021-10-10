@@ -30,7 +30,6 @@ const Cadastro = props => {
       .replace('.', '')
       .replace(',', '.');
 
-      console.log('listaConta', listaConta)
     const listaContaAdaptada = listaConta.map((item, index) => {
       return {
         id: idUltimoCadastro + index + 1,
